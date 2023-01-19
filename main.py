@@ -21,6 +21,7 @@ def home():
         return render_template('home.html', title='Главная')
 
 
+''' CLIENTS '''
 @app.route('/add_client', methods=['GET', 'POST'])
 def add_client():
 
@@ -38,9 +39,64 @@ def remove_client():
 @app.route('/all_clients', methods=['GET', 'POST'])
 def all_clients():
     if request.method == 'GET':
-        return render_template('all_client.html', title='Список клиентов')
+        return render_template('all_clients.html', title='Список клиентов')
 
 
+''' REO '''
+@app.route('/add_reo', methods=['GET', 'POST'])
+def add_reo():
+    if request.method == 'GET':
+        return render_template('add_reo.html', title='Добавить объект недвижимости')
+
+
+@app.route('/remove_reo', methods=['GET', 'POST'])
+def remove_reo():
+    if request.method == 'GET':
+        return render_template('remove_reo.html', title='Удалить объект недвижимости')
+
+
+@app.route('/all_reos', methods=['GET', 'POST'])
+def all_reos():
+    if request.method == 'GET':
+        return render_template('all_reos.html', title='Список объектов недвижимости')
+
+
+''' EMPLOYEE '''
+@app.route('/add_EMPLOYEE', methods=['GET', 'POST'])
+def add_employee():
+    if request.method == 'GET':
+        return render_template('add_employee.html', title='Добавить сотрудника')
+
+
+@app.route('/remove_employee', methods=['GET', 'POST'])
+def remove_employee():
+    if request.method == 'GET':
+        return render_template('remove_employee.html', title='Удалить сотрдуника')
+
+
+@app.route('/all_employees', methods=['GET', 'POST'])
+def all_employees():
+    if request.method == 'GET':
+        return render_template('all_employees.html', title='Список сотрудников')
+
+
+'''APPLICATION'''
+@app.route('/add_application', methods=['GET', 'POST'])
+def add_application():
+    if request.method == 'GET':
+        return render_template('add_application.html', title='Добавить заявку')
+
+
+@app.route('/remove_application', methods=['GET', 'POST'])
+def remove_application():
+    if request.method == 'GET':
+        return render_template('remove_application.html', title='Удалить заявку')
+
+
+@app.route('/all_applications', methods=['GET', 'POST'])
+def all_applications():
+    if request.method == 'GET':
+        return render_template('all_applications.html', title='Список заявок')
 
 
 if __name__ == '__main__':

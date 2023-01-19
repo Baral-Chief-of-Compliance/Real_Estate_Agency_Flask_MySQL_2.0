@@ -8,6 +8,7 @@
         <title>Alexo</title>
     {% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css')}}">
+    <link rel="stylesheet" href="../static/css/base.css">
 </head>
 <body>
     <div class="navigation">
@@ -16,36 +17,36 @@
             <div class="dropdown">
                 <button onclick="myFunction('clientDropdown')" class="nav-selection">Клиенты</button>
                 <div id="clientDropdown" class="dropdown-content">
-                    <a href="{{ url_for('add_client') }}">Добавить</a>
-                    <a href="{{ url_for('remove_client') }}">Удалить</a>
-                    <a href="{{ url_for('all_clients') }}">Список</a>
+                    <a href="{{ url_for('add_client')}}">Добавить</a>
+                    <a href="{{ url_for('remove_client')}}">Удалить</a>
+                    <a href="{{ url_for('all_clients')}}">Список</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <button onclick="myFunction('reoDropdown')" class="nav-selection">Объекты недвижимости</button>
                 <div id="reoDropdown" class="dropdown-content">
-                    <a href="#">Добавить</a>
-                    <a href="#">Удалить</a>
-                    <a href="#">Список</a>
+                    <a href="{{ url_for('add_reo')}}">Добавить</a>
+                    <a href="{{ url_for('remove_reo')}}">Удалить</a>
+                    <a href="{{ url_for('all_reos')}}">Список</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <button onclick="myFunction('employeeDropdown')" class="nav-selection">Сотрудники</button>
                 <div id="employeeDropdown" class="dropdown-content">
-                    <a href="#">Добавить</a>
-                    <a href="#">Удалить</a>
-                    <a href="#">Список</a>
+                    <a href="{{ url_for('add_employee')}}">Добавить</a>
+                    <a href="{{ url_for('remove_employee')}}">Удалить</a>
+                    <a href="{{ url_for('all_employees')}}">Список</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <button onclick="myFunction('applicationsDropdown')" class="nav-selection">Заявки</button>
                 <div id="applicationsDropdown" class="dropdown-content">
-                    <a href="#">Добавить</a>
-                    <a href="#">Удалить</a>
-                    <a href="#">Список</a>
+                    <a href="{{ url_for('add_application')}}">Добавить</a>
+                    <a href="{{ url_for('remove_application')}}">Удалить</a>
+                    <a href="{{ url_for('all_applications')}}">Список</a>
                 </div>
             </div>
 

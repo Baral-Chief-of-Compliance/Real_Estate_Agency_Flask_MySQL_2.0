@@ -16,7 +16,6 @@
 .navigation-variant {
     display: flex;
     flex-direction: row;
-    background-color: #f8fcfd;
 }
 
 .nav-selection{
@@ -56,7 +55,7 @@
 }
 
 .dropdown-content a {
-    color: black;
+    color: #696969;
     margin-left: 45px;
     padding: 10px  0px 10px 0px;
     text-decoration: none;
@@ -77,3 +76,13 @@
 }
 
 .show {display:block;}
+
+.main{
+    background-color: #00bfff;
+}
+
+.main-content{
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: white;
+}
