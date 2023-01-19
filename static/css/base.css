@@ -90,16 +90,20 @@ body{
     margin-right: 10%;
     background-color: white;
     padding-top: 25px;
+    margin-bottom: 20px;
 }
 
 .footer{
-    position: fixed; /* Фиксированное положение */
-    left: 0; bottom: 0; /* Левый нижний угол */
-    padding: 10px; /* Поля вокруг текста */
-    background: #696969; /* Цвет фона */
-    color: #fff; /* Цвет текста */
-    width: 100%; /* Ширина слоя */
-    padding-left: 48%;
+    background-color: #696969;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    color: white;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    margin-top: 5px;
 }
 
 .clients-form{
@@ -145,4 +149,9 @@ body{
 
 #entity-block{
     display: none;
+}
+
+#entity-input{
+    display: flex;
+    flex-direction: column;
 }

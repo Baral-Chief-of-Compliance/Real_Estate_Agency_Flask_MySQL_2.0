@@ -11,11 +11,14 @@
             <div>
                 <input id="physical-person" class="client-checkbox" type="checkbox" name="physical_person" value="physical_person">Физическое лицо<br>
                 <div id="physical-person-block">
-                    Инфа
+                    <input class="clients-input" type="text" name="cl_address" placeholder="Адрес" id="cl_address">
                 </div>
                 <input id="entity" class="client-checkbox" type="checkbox" name="entity" value="entity">Юридическое лицо<br>
                 <div id="entity-block">
-                    Инфа
+                    <div id="entity-input">
+                        <input class="clients-input" type="text" name="company_name" placeholder="Название компании" id="company_name">
+                        <input class="clients-input" type="text" name="inn" placeholder="ИНН" id="inn">
+                    </div>
                 </div>
             </div>
             <input class="clients-input" name="clients_type" list="clients_type" placeholder="Тип клиента"/>
