@@ -3,3 +3,77 @@
     padding: 0%;
     font-family: 'Inter', sans-serif;
 }
+
+.navigation{
+    padding-left: 20%;
+    margin-right: 0%;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    box-shadow: 0px 5px 8px 0px rgba(34, 60, 80, 0.2);
+
+}
+
+.navigation-variant {
+    display: flex;
+    flex-direction: row;
+    background-color: #f8fcfd;
+}
+
+.nav-selection{
+    margin-left: 45px;
+    margin-right: 45px;
+    color: #696969;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    border: none;
+    background-color: white;
+}
+
+.nav-selection:hover{
+    cursor: pointer;
+    color: #00bfff;
+}
+
+.nav-operator-info{
+    margin-left: 150px;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-operator-info div{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.dropdown-content{
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+    margin-top: 10px;
+    display: none;
+    background-color: white;
+}
+
+.dropdown-content a {
+    color: black;
+    margin-left: 45px;
+    padding: 10px  0px 10px 0px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover{
+    cursor: pointer;
+    color: #00bfff;
+}
+
+#reoDropdown{
+    width: 320px;
+}
+
+#employeeDropdown{
+    width: 190px;
+}
+
+.show {display:block;}

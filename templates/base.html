@@ -11,7 +11,59 @@
 </head>
 <body>
     <div class="navigation">
-        <a href="{{ url_for('add_client') }}">Добавить клиента</a>
+        <div class="navigation-variant">
+
+            <div class="dropdown">
+                <button onclick="myFunction('clientDropdown')" class="nav-selection">Клиенты</button>
+                <div id="clientDropdown" class="dropdown-content">
+                    <a href="{{ url_for('add_client') }}">Добавить</a>
+                    <a href="{{ url_for('remove_client') }}">Удалить</a>
+                    <a href="{{ url_for('all_clients') }}">Список</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button onclick="myFunction('reoDropdown')" class="nav-selection">Объекты недвижимости</button>
+                <div id="reoDropdown" class="dropdown-content">
+                    <a href="#">Добавить</a>
+                    <a href="#">Удалить</a>
+                    <a href="#">Список</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button onclick="myFunction('employeeDropdown')" class="nav-selection">Сотрудники</button>
+                <div id="employeeDropdown" class="dropdown-content">
+                    <a href="#">Добавить</a>
+                    <a href="#">Удалить</a>
+                    <a href="#">Список</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button onclick="myFunction('applicationsDropdown')" class="nav-selection">Заявки</button>
+                <div id="applicationsDropdown" class="dropdown-content">
+                    <a href="#">Добавить</a>
+                    <a href="#">Удалить</a>
+                    <a href="#">Список</a>
+                </div>
+            </div>
+
+            <div class="nav-operator-info">
+                <div class="nav-operator-name">
+                    admin
+                </div>
+                <div class="nav-operator-del">
+                    |
+                </div>
+                <div class="nav-operator-exit">
+                    выход
+                </div>
+            </div>
+
+        </div>
+
+<!--        <a href="{{ url_for('add_client') }}">Клиенты</a>-->
     </div>
 
     <div class="main">
@@ -20,5 +72,6 @@
             {% endblock %}
         </div>
     </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/dropdown.js')}}"></script>
 </body>
 </html>

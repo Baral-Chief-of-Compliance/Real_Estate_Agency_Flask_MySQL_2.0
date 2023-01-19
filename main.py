@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 
 
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -13,11 +14,33 @@ app.config['MYSQL_DB'] = 'real_estate_agency_3'
 mysql = MySQL(app)
 
 
+@app.route('/', methods=['GET'])
+def home():
+
+    if request.method == 'GET':
+        return render_template('home.html', title='Главная')
+
+
 @app.route('/add_client', methods=['GET', 'POST'])
 def add_client():
 
     if request.method == 'GET':
         return render_template('add_client.html', title='Добавить клиента')
+
+
+@app.route('/remove_client', methods=['GET', 'POST'])
+def remove_client():
+
+    if request.method == 'GET':
+        return render_template('remove_client.html', title='Удалить клиента')
+
+
+@app.route('/all_clients', methods=['GET', 'POST'])
+def all_clients():
+    if request.method == 'GET':
+        return render_template('all_client.html', title='Список клиентов')
+
+
 
 
 if __name__ == '__main__':
