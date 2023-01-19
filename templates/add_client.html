@@ -1,5 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Добавить клиенат</h1>
+<div class="clients-content">
+    <h1 class="page-title">Добавить клиенат</h1>
+        <form class="clients-form" method="post">
+            <input class="clients-input" type="text" name="cl_name" placeholder="Имя" id="cl_name" required>
+            <input class="clients-input" type="text" name="cl_surname" placeholder="Фамилия" id="cl_surname" required>
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Отчество" id="cl_patronymic">
+            <input class="clients-input" type="text" name="cl_ph_number" placeholder="Номер телефона" id="cl_ph_number" required>
+            <div>
+                <input id="physical-person" class="client-checkbox" type="checkbox" name="physical_person" value="physical_person">Физическое лицо<br>
+                <div id="physical-person-block">
+                    Инфа
+                </div>
+                <input id="entity" class="client-checkbox" type="checkbox" name="entity" value="entity">Юридическое лицо<br>
+                <div id="entity-block">
+                    Инфа
+                </div>
+            </div>
+            <input class="clients-input" name="clients_type" list="clients_type" placeholder="Тип клиента"/>
+
+            <datalist id = "clients_type">
+                <option value="Покупатель" />
+                <option value="Продавец" />
+                <option value="Съемщик" />
+                <option value="Арендатор" />
+            </datalist>
+
+        </form>
+</div>
 {% endblock %}
