@@ -1,5 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Добавить заявку</h1>
+<div class="clients-content">
+    <h1 class="page-title">Добавить заявку</h1>
+        <form class="clients-form" method="post">
+            <input class="clients-input" type="text" name="cl_name" placeholder="Клиент" id="cl_number" required>
+            <input class="clients-input" type="text" name="cl_surname" placeholder="Сотрудник" id="reo_number" required>
+
+            <div class="label-info">
+                Дата заключения
+            </div>
+            <input class="clients-input" type="date" name="cl_patronymic" placeholder="Дата заключения" id="date_of_conclusion">
+
+            <input class="clients-input-button" type="submit" value="Добавить заявку">
+
+        </form>
+</div>
 {% endblock %}

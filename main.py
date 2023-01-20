@@ -62,7 +62,7 @@ def all_reos():
 
 
 ''' EMPLOYEE '''
-@app.route('/add_EMPLOYEE', methods=['GET', 'POST'])
+@app.route('/add_employee', methods=['GET', 'POST'])
 def add_employee():
     if request.method == 'GET':
         return render_template('add_employee.html', title='Добавить сотрудника')

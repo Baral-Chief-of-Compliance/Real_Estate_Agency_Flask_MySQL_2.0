@@ -1,5 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Добавить объект недвижимости</h1>
+<div class="clients-content">
+    <h1 class="page-title">Добавить объект недвижимости</h1>
+        <form class="clients-form" method="post">
+            <input class="clients-input" type="text" name="cl_name" placeholder="Вид помещения" id="reo_room_type" required>
+            <input class="clients-input" type="text" name="cl_surname" placeholder="Тип операции" id="reo_type_of_operation" required>
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Район" id="reo_district">
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Адрес" id="reo_address">
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Сотрудник" id="reo_employee_number">
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Этаж" id="reo_floor">
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Кол-во комнат" id="reo_number_of_rooms">
+
+            <input class="clients-input" type="text" list="internet" name="cl_patronymic" placeholder="Интернет" id="reo_availability_of_the_Internet">
+            <datalist id = "internet">
+                <option value="Да" />
+                <option value="Нет" />
+            </datalist>
+
+            <input class="clients-input"  list="furniture" type="text" name="cl_patronymic" placeholder="Мебель" id="reo_availability_of_furniture">
+            <datalist id = "furniture">
+                <option value="Да" />
+                <option value="Нет" />
+            </datalist>
+
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Цена" id="reo_price">
+            <input class="clients-input-button" type="submit" value="Добавить объект">
+
+        </form>
+</div>
 {% endblock %}
