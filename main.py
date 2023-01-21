@@ -1,10 +1,10 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
-
+import MySQLdb.cursors
 
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+# app.config.from_object(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -25,7 +25,33 @@ def home():
 @app.route('/add_client', methods=['GET', 'POST'])
 def add_client():
 
-    if request.method == 'GET':
+    if (request.method == 'POST' and
+        "cl_name" in request.form and
+        "cl_surname" in request.form and
+        "cl_patronymic" in request.form and
+        "cl_ph_number" in request.form and
+        "clients_type" in request.form and
+        "cl_address" in request.form
+    ):
+
+        cur = mysql.connection.cursor()
+
+        cl_name = request.form["cl_name"]
+        cl_surname = request.form["cl_surname"]
+        cl_patronymic = request.form["cl_patronymic"]
+        cl_ph_number = request.form["cl_ph_number"]
+        clients_type = request.form["clients_type"]
+        cl_address = request.form["cl_address"]
+
+        cur.callproc('add_client_phys', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, cl_address])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('add_client'))
+
+    elif request.method == 'GET':
         return render_template('add_client.html', title='Добавить клиента')
 
 
@@ -64,7 +90,27 @@ def all_reos():
 ''' EMPLOYEE '''
 @app.route('/add_employee', methods=['GET', 'POST'])
 def add_employee():
-    if request.method == 'GET':
+
+    if (request.method == 'POST' and
+        "emp_name" in request.form and
+        "emp_surname" in request.form and
+        "emp_patronymic" in request.form
+    ):
+        cur = mysql.connection.cursor()
+
+        emp_name = request.form["emp_name"]
+        emp_surname = request.form["emp_surname"]
+        emp_patronymic = request.form["emp_patronymic"]
+
+        cur.callproc('add_employee', [emp_name, emp_surname, emp_patronymic])
+
+        mysql.connection.commit()
+
+        cur.close()
+
+        return redirect(url_for('add_employee'))
+
+    else:
         return render_template('add_employee.html', title='Добавить сотрудника')
 
 

@@ -4,10 +4,10 @@
 <div class="clients-content">
     <h1 class="page-title">Добавить клиенат</h1>
         <form class="clients-form" method="post">
-            <input class="clients-input" type="text" name="cl_name" placeholder="Имя" id="cl_name" required>
-            <input class="clients-input" type="text" name="cl_surname" placeholder="Фамилия" id="cl_surname" required>
-            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Отчество" id="cl_patronymic">
-            <input class="clients-input" type="text" name="cl_ph_number" placeholder="Номер телефона" id="cl_ph_number" required>
+            <input class="clients-input" type="text" name="cl_name" placeholder="Имя" required>
+            <input class="clients-input" type="text" name="cl_surname" placeholder="Фамилия" required>
+            <input class="clients-input" type="text" name="cl_patronymic" placeholder="Отчество">
+            <input class="clients-input" type="text" name="cl_ph_number" placeholder="Номер телефона"required>
             <div>
                 <input id="physical-person" class="client-checkbox" type="checkbox" name="physical_person" value="physical_person">Физическое лицо<br>
                 <div id="physical-person-block">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <input class="clients-input" name="clients_type" list="clients_type" placeholder="Тип клиента"/>
+            <input class="clients-input" name="clients_type" list="clients_type" placeholder="Тип клиента" required/>
 
             <datalist id = "clients_type">
                 <option value="Покупатель" />
