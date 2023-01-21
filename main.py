@@ -25,13 +25,9 @@ def home():
 @app.route('/add_client', methods=['GET', 'POST'])
 def add_client():
 
-    if (request.method == 'POST' and
-        "cl_name" in request.form and
-        "cl_surname" in request.form and
-        "cl_patronymic" in request.form and
-        "cl_ph_number" in request.form and
-        "clients_type" in request.form and
-        "cl_address" in request.form
+    if (
+            request.method == 'POST' and
+            request.form.get("physical_person") != None
     ):
 
         cur = mysql.connection.cursor()
@@ -44,6 +40,28 @@ def add_client():
         cl_address = request.form["cl_address"]
 
         cur.callproc('add_client_phys', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, cl_address])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('add_client'))
+
+    elif (
+            request.method == 'POST' and
+            request.form.get("entity") != None
+    ):
+        cur = mysql.connection.cursor()
+
+        cl_name = request.form["cl_name"]
+        cl_surname = request.form["cl_surname"]
+        cl_patronymic = request.form["cl_patronymic"]
+        cl_ph_number = request.form["cl_ph_number"]
+        clients_type = request.form["clients_type"]
+        company_name = request.form["company_name"]
+        inn = request.form["inn"]
+
+        cur.callproc('add_client_entity', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, company_name, inn])
 
         cur.close()
 
