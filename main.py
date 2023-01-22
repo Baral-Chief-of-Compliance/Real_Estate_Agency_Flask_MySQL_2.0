@@ -73,11 +73,47 @@ def add_client():
         return render_template('add_client.html', title='Добавить клиента')
 
 
-@app.route('/remove_client', methods=['GET', 'POST'])
-def remove_client():
+@app.route('/search_client', methods=['GET', 'POST'])
+def search_client():
+
+    if (request.method == 'POST' and request.form.get("entity") != None):
+
+        cl_phone = request.form['cl_phone']
+
+        return redirect(url_for('search_results_phone', cl_phone=cl_phone))
+
+    elif request.method == 'GET':
+        return render_template('search_client.html', title='Поиск клиента')
+
+
+@app.route('/search_results_phone', methods=['GET'])
+def search_results_phone():
 
     if request.method == 'GET':
-        return render_template('remove_client.html', title='Удалить клиента')
+
+        cl_phone = request.args['cl_phone']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('search_phys_client_phone_number', [cl_phone])
+
+        results_phys = cur.fetchall()
+
+        cur.close()
+
+        print(results_phys)
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('search_entity_client_phone_number', [cl_phone])
+
+        results_entity = cur.fetchall()
+
+        cur.close()
+
+        print(results_entity)
+
+        return render_template('search_results_phone.html', title='Поиск по номеру телефона', cl_phone=cl_phone, results_phys=results_phys, results_entity=results_entity )
 
 
 @app.route('/all_clients', methods=['GET', 'POST'])
@@ -92,8 +128,6 @@ def all_clients():
 
         cur.close()
 
-        print(clients_phys)
-
         cur = mysql.connection.cursor()
 
         cur.callproc('show_client_entity')
@@ -101,8 +135,6 @@ def all_clients():
         clients_entity = cur.fetchall()
 
         cur.close()
-
-        print(clients_entity)
 
         return render_template('all_clients.html', title='Список клиентов', clients_phys=clients_phys, clients_entity=clients_entity)
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="clients-content">
+    <h1 class="page-title">Найти клиента</h1>
+    <form class="clients-form" method="post">
+            <div>
+                <input id="physical-person" class="client-checkbox" type="checkbox" name="physical_person" value="physical_person">По фамилии, имени, отчеству<br>
+                <div id="physical-person-block">
+                    <div id="personal-input">
+                        <input class="clients-input" type="text" name="cl_surname" placeholder="Фамилия" id="cl_surname">
+                        <input class="clients-input" type="text" name="cl_name" placeholder="Имя" id="cl_name">
+                        <input class="clients-input" type="text" name="cl_patronymic" placeholder="Отчество" id="cl_patronymic">
+                    </div>
+                </div>
+                <input id="entity" class="client-checkbox" type="checkbox" name="entity" value="entity">По номеру телефона<br>
+                <div id="entity-block">
+                    <div id="entity-input">
+                        <input class="clients-input" type="text" name="cl_phone" placeholder="Номер телефона" id="cl_phone">
+                    </div>
+                </div>
+            </div>
+
+            <input class="clients-input-button" type="submit" value="Найти клиента">
+
+    </form>
+</div>
+{% endblock %}

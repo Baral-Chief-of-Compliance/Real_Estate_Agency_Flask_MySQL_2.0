@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="clients-content">
+    <h1 class="page-title">Результаты поиска по {{ cl_phone }}</h1>
+
+    Физическое лицо
+    {% if results_phys %}
+        {{ results_phys }}
+    {% else %}
+        По вашему запросу ничего нет
+    {% endif %}
+
+    Юридическое лицо
+    {% if results_entity %}
+        {{ results_entity }}
+    {% else %}
+        По вашему запросу ничего нет
+    {% endif %}
+
+
+</div>
+{% endblock %}
