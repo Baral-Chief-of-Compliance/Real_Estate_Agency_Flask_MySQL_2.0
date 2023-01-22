@@ -83,7 +83,28 @@ def remove_client():
 @app.route('/all_clients', methods=['GET', 'POST'])
 def all_clients():
     if request.method == 'GET':
-        return render_template('all_clients.html', title='Список клиентов')
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_client_phys')
+
+        clients_phys = cur.fetchall()
+
+        cur.close()
+
+        print(clients_phys)
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_client_entity')
+
+        clients_entity = cur.fetchall()
+
+        cur.close()
+
+        print(clients_entity)
+
+        return render_template('all_clients.html', title='Список клиентов', clients_phys=clients_phys, clients_entity=clients_entity)
 
 
 ''' REO '''

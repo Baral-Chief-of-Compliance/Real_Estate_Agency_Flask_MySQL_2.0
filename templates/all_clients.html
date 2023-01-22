@@ -1,5 +1,117 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Список клиентов</h1>
+<div class="clients-content">
+    <h1 class="page-title">Список клиентов</h1>
+    <div class="table-name">Физические лица</div>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                   Фамилия
+                </th>
+                <th>
+                    Имя
+                </th>
+                <th>
+                   Отчество
+                </th>
+                <th>
+                    Тип
+                </th>
+                <th>
+                    Телефон
+                </th>
+                <th>
+                    Адрес
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for client in clients_phys %}
+            <tr>
+                <td>
+                    {{ client[0] }}
+                </td>
+                <td>
+                    {{ client[1] }}
+                </td>
+                <td>
+                    {{ client[2] }}
+                </td>
+                <td>
+                   {{ client[3] }}
+                </td>
+                <td>
+                    {{ client[4] }}
+                </td>
+                <td>
+                   {{ client[5] }}
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="table-name">Юридические лица</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Фамилия
+                </th>
+                <th>
+                    Имя
+                </th>
+                <th>
+                    Отчество
+                </th>
+                <th>
+                    Тип
+                </th>
+                <th>
+                    Телефон
+                </th>
+                <th>
+                    Компания
+                </th>
+                <th>
+                    ИНН
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for client in clients_entity %}
+            <tr>
+                <td>
+                    {{ client[0] }}
+                </td>
+                <td>
+                    {{ client[1] }}
+                </td>
+                <td>
+                    {{ client[2] }}
+                </td>
+                <td>
+                    {{ client[3] }}
+                </td>
+                <td>
+                    {{ client[4] }}
+                </td>
+                <td>
+                    {{ client[5] }}
+                </td>
+                <td>
+                    {{ client[6] }}
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

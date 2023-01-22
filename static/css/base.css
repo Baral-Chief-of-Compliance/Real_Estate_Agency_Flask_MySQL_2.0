@@ -179,3 +179,34 @@ body{
     margin-top: 15px;
     margin-bottom: 0px;
 }
+
+table{
+    border-collapse: collapse;
+    border: 1px solid grey;
+    text-align: center;
+}
+
+th{
+    border: 1px solid grey;
+}
+
+td{
+    border: 1px solid grey;
+    padding: 5px;
+}
+
+.table-name{
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+table{
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+
+thead{
+    font-style: italic;
+}
