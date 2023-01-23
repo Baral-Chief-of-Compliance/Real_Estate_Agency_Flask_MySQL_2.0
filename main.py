@@ -95,23 +95,21 @@ def search_results_phone():
 
         cur = mysql.connection.cursor()
 
-        cur.callproc('search_phys_client_phone_number', [cl_phone])
+        # cur.callproc('search_phys_client_phone_number', [cl_phone])
+
+        cur.execute('select cl_number from client where client.cl_phone = %s', (cl_phone,))
+
+        client_number = cur.fetchone()
+
+        cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, physical_person.cl_address from client, physical_person where (physical_person.cl_number = %s  and client.cl_number = %s);',(client_number[0], client_number[0],))
 
         results_phys = cur.fetchall()
 
-        cur.close()
-
-        print(results_phys)
-
-        cur = mysql.connection.cursor()
-
-        cur.callproc('search_entity_client_phone_number', [cl_phone])
+        cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, entity.company_name, entity.inn from client, entity where (entity.cl_number = %s  and client.cl_number = %s);', (client_number[0], client_number[0],))
 
         results_entity = cur.fetchall()
 
         cur.close()
-
-        print(results_entity)
 
         return render_template('search_results_phone.html', title='Поиск по номеру телефона', cl_phone=cl_phone, results_phys=results_phys, results_entity=results_entity )
 

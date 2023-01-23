@@ -6,16 +6,31 @@
 
     Физическое лицо
     {% if results_phys %}
-        {{ results_phys }}
+        {% for res in results_phys %}
+            {{ res[0] }}
+            {{ res[1] }}
+            {{ res[2] }}
+            {{ res[3] }}
+            {{ res[4] }}
+            {{ res[5] }}
+        {% endfor %}
     {% else %}
         По вашему запросу ничего нет
     {% endif %}
 
     Юридическое лицо
     {% if results_entity %}
-        {{ results_entity }}
+        {% for res in results_entity %}
+            {{ res[0] }}
+            {{ res[1] }}
+            {{ res[2] }}
+            {{ res[3] }}
+            {{ res[4] }}
+            {{ res[5] }}
+            {{ res[6] }}
+        {% endfor %}
     {% else %}
-        По вашему запросу ничего нет аыыы
+        По вашему запросу ничего нет
     {% endif %}
 
 
