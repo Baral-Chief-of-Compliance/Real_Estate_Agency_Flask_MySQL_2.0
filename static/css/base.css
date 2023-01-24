@@ -5,7 +5,7 @@
 }
 body{
     height: 100%;
-    background-color: #00bfff;
+    background-color: white;
 }
 
 .navigation{
@@ -213,4 +213,9 @@ table{
 
 thead{
     font-style: italic;
+}
+
+
+.absent{
+    color:  #ff4000;
 }

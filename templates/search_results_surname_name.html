@@ -3,9 +3,9 @@
 {% block content %}
 <div class="clients-content">
     <h1 class="page-title">Результаты поиска по</h1>
-    <h1 class="page-title">{{ cl_phone }}</h1>
+    <h1 class="page-title">{{cl_surname}} {{cl_name}} {{cl_patronymic}}</h1>
 
- <div class="table-name">Физическое лицо</div>
+    <div class="table-name">Физическое лицо</div>
     {% if results_phys %}
         <table>
             <thead>
@@ -57,7 +57,7 @@
             </tbody>
         </table>
     {% else %}
-        <div class="absent">По вашему запросу ничего нет</div>
+    <div class="absent">По вашему запросу ничего нет</div>
     {% endif %}
 
     <div class="table-name">Юридическое лицо</div>

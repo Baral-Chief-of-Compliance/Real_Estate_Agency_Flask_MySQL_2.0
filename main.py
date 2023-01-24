@@ -76,7 +76,16 @@ def add_client():
 @app.route('/search_client', methods=['GET', 'POST'])
 def search_client():
 
-    if (request.method == 'POST' and request.form.get("entity") != None):
+    if (request.method == 'POST' and request.form.get("physical_person") != None):
+
+        cl_surname = request.form['cl_surname']
+        cl_name = request.form['cl_name']
+        cl_patronymic = request.form['cl_patronymic']
+
+        return redirect(url_for('search_results_surname_name', cl_surname=cl_surname, cl_name=cl_name, cl_patronymic=cl_patronymic))
+
+
+    elif (request.method == 'POST' and request.form.get("entity") != None):
 
         cl_phone = request.form['cl_phone']
 
@@ -93,26 +102,68 @@ def search_results_phone():
 
         cl_phone = request.args['cl_phone']
 
-        cur = mysql.connection.cursor()
+        results_phys = []
+        results_entity = []
 
-        # cur.callproc('search_phys_client_phone_number', [cl_phone])
+        cur = mysql.connection.cursor()
 
         cur.execute('select cl_number from client where client.cl_phone = %s', (cl_phone,))
 
         client_number = cur.fetchone()
 
-        cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, physical_person.cl_address from client, physical_person where (physical_person.cl_number = %s  and client.cl_number = %s);',(client_number[0], client_number[0],))
+        if client_number != None:
 
-        results_phys = cur.fetchall()
+            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, physical_person.cl_address from client, physical_person where (physical_person.cl_number = %s  and client.cl_number = %s);',(client_number[0], client_number[0],))
 
-        cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, entity.company_name, entity.inn from client, entity where (entity.cl_number = %s  and client.cl_number = %s);', (client_number[0], client_number[0],))
+            results_phys = cur.fetchall()
 
-        results_entity = cur.fetchall()
+            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, entity.company_name, entity.inn from client, entity where (entity.cl_number = %s  and client.cl_number = %s);', (client_number[0], client_number[0],))
 
-        cur.close()
+            results_entity = cur.fetchall()
 
-        return render_template('search_results_phone.html', title='Поиск по номеру телефона', cl_phone=cl_phone, results_phys=results_phys, results_entity=results_entity )
+            cur.close()
 
+        else:
+            cur.close()
+
+        return render_template('search_results_phone.html', title='Поиск по номеру телефона', cl_phone=cl_phone, results_phys=results_phys, results_entity=results_entity)
+
+
+@app.route('/search_results_surname_name', methods=['GET'])
+def search_results_surname_name():
+
+    if request.method == 'GET':
+
+        cl_surname = request.args['cl_surname']
+        cl_name = request.args['cl_name']
+        cl_patronymic = request.args['cl_patronymic']
+
+        results_phys = []
+        results_entity = []
+
+        cur = mysql.connection.cursor()
+
+        cur.execute('select cl_number from client where (client.cl_surname=%s and client.cl_name=%s and client.cl_patronymic = %s )', (cl_surname,cl_name, cl_patronymic))
+
+        client_number = cur.fetchone()
+
+        if client_number != None:
+
+            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, physical_person.cl_address from client, physical_person where (physical_person.cl_number = %s  and client.cl_number = %s);',(client_number[0], client_number[0],))
+
+            results_phys = cur.fetchall()
+
+            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, entity.company_name, entity.inn from client, entity where (entity.cl_number = %s  and client.cl_number = %s);', (client_number[0], client_number[0],))
+
+            results_entity = cur.fetchall()
+
+            cur.close()
+
+        else:
+
+            cur.close()
+
+        return render_template('search_results_surname_name.html', title='Поиск по Фамилии, Имени', results_phys=results_phys, results_entity=results_entity, cl_surname=cl_surname, cl_name=cl_name, cl_patronymic=cl_patronymic)
 
 @app.route('/all_clients', methods=['GET', 'POST'])
 def all_clients():
