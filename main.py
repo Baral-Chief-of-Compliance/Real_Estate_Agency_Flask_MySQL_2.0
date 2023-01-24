@@ -209,11 +209,9 @@ def phys_client():
 
         results_phys = cur.fetchone()
 
-        print(results_phys[0])
-
         cur.close()
 
-        return render_template('phys_client.html', title='Информация о физическом лице', results_phys=results_phys)
+        return render_template('phys_client.html', title=f'{results_phys[1]} {results_phys[2]} {results_phys[3]}', results_phys=results_phys)
 
 
 @app.route('/entity_client', methods=['GET', 'POST'])
@@ -227,11 +225,11 @@ def entity_client():
 
         cur.callproc('entity_client_inf', [client_number])
 
-        results_entity = cur.fetcone()
+        results_entity = cur.fetchone()
 
         cur.close()
 
-        return render_template('entity_client.html', title='Информация о юридическом лице')
+        return render_template('entity_client.html', title=f'{results_entity[1]} {results_entity[2]} {results_entity[3]}', results_entity=results_entity)
 
 
 ''' REO '''
