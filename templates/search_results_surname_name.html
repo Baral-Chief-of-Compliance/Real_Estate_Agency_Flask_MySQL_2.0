@@ -35,22 +35,22 @@
             {% for res in results_phys %}
                 <tr>
                     <td>
-                        {{ res[0] }}
+                       <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[1] }}</a>
                     </td>
                     <td>
-                        {{ res[1] }}
+                        <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[2] }}</a>
                     </td>
                     <td>
-                        {{ res[2] }}
+                        <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[3] }}</a>
                     </td>
                     <td>
-                       {{ res[3] }}
+                       <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[4] }}</a>
                     </td>
                     <td>
-                        {{ res[4] }}
+                       <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[5] }}</a>
                     </td>
                     <td>
-                       {{ res[5] }}
+                       <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[6] }}</a>
                     </td>
                 </tr>
             {% endfor %}

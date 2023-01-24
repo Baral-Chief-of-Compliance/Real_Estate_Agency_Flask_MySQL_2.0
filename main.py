@@ -113,11 +113,15 @@ def search_results_phone():
 
         if client_number != None:
 
-            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, physical_person.cl_address from client, physical_person where (physical_person.cl_number = %s  and client.cl_number = %s);',(client_number[0], client_number[0],))
+            cur.callproc('phys_client_inf', [client_number])
 
             results_phys = cur.fetchall()
 
-            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, entity.company_name, entity.inn from client, entity where (entity.cl_number = %s  and client.cl_number = %s);', (client_number[0], client_number[0],))
+            cur.close()
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('entity_client_inf', [client_number])
 
             results_entity = cur.fetchall()
 
@@ -149,11 +153,15 @@ def search_results_surname_name():
 
         if client_number != None:
 
-            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, physical_person.cl_address from client, physical_person where (physical_person.cl_number = %s  and client.cl_number = %s);',(client_number[0], client_number[0],))
+            cur.callproc('phys_client_inf', [client_number])
 
             results_phys = cur.fetchall()
 
-            cur.execute('select client.cl_surname, client.cl_name, client.cl_patronymic, client.cl_type , client.cl_phone, entity.company_name, entity.inn from client, entity where (entity.cl_number = %s  and client.cl_number = %s);', (client_number[0], client_number[0],))
+            cur.close()
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('entity_client_inf', [client_number])
 
             results_entity = cur.fetchall()
 
@@ -186,6 +194,44 @@ def all_clients():
         cur.close()
 
         return render_template('all_clients.html', title='Список клиентов', clients_phys=clients_phys, clients_entity=clients_entity)
+
+
+@app.route('/phys_client', methods=['GET', 'POST'])
+def phys_client():
+
+    if request.method == 'GET':
+
+        client_number = request.args['cl_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('phys_client_inf', [client_number])
+
+        results_phys = cur.fetchone()
+
+        print(results_phys[0])
+
+        cur.close()
+
+        return render_template('phys_client.html', title='Информация о физическом лице', results_phys=results_phys)
+
+
+@app.route('/entity_client', methods=['GET', 'POST'])
+def entity_client():
+
+    if request.method == 'GET':
+
+        client_number = request.args['cl_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('entity_client_inf', [client_number])
+
+        results_entity = cur.fetcone()
+
+        cur.close()
+
+        return render_template('entity_client.html', title='Информация о юридическом лице')
 
 
 ''' REO '''

@@ -32,22 +32,22 @@
             {% for client in clients_phys %}
             <tr>
                 <td>
-                    {{ client[0] }}
+                    <a href="{{ url_for('phys_client', cl_number=client[0]) }}">{{ client[1] }}</a>
                 </td>
                 <td>
-                    {{ client[1] }}
+                    <a href="{{ url_for('phys_client', cl_number=client[0]) }}">{{ client[1] }}</a>
                 </td>
                 <td>
-                    {{ client[2] }}
+                    <a href="{{ url_for('phys_client', cl_number=client[0]) }}">{{ client[2] }}</a>
                 </td>
                 <td>
-                   {{ client[3] }}
+                   <a href="{{ url_for('phys_client', cl_number=client[0]) }}">{{ client[3] }}</a>
                 </td>
                 <td>
-                    {{ client[4] }}
+                    <a href="{{ url_for('phys_client', cl_number=client[0]) }}">{{ client[4] }}</a>
                 </td>
                 <td>
-                   {{ client[5] }}
+                   <a href="{{ url_for('phys_client', cl_number=client[0]) }}">{{ client[5] }}</a>
                 </td>
             </tr>
 
