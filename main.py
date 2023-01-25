@@ -328,11 +328,39 @@ def add_reo():
         return render_template('add_reo.html', title='Добавить объект недвижимости', employees=employees)
 
 
-@app.route('/remove_reo', methods=['GET', 'POST'])
-def remove_reo():
+@app.route('/search_reo', methods=['GET', 'POST'])
+def search_reo():
+
+    if request.method == 'POST':
+        reo_address = request.form['reo_address']
+
+        return redirect(url_for('search_result_reo', reo_address=reo_address))
+
+    elif request.method == 'GET':
+
+        return render_template('search_reo.html', title='Найти объект недвижимости')
+
+
+@app.route('/search_result_reo', methods=['GET'])
+def search_result_reo():
+
     if request.method == 'GET':
 
-        return render_template('remove_reo.html', title='Удалить объект недвижимости')
+        reo_address = request.args['reo_address']
+
+        print(reo_address)
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('search_real_estate_objects', [reo_address])
+
+        search_result = cur.fetchall()
+
+        print(search_result)
+
+        cur.close()
+
+        return render_template('search_result_reo.html', search_result=search_result)
 
 
 @app.route('/all_reos', methods=['GET', 'POST'])
@@ -345,9 +373,6 @@ def all_reos():
 
         real_estate_objects = cur.fetchall()
 
-        for res in real_estate_objects:
-            print(res[10])
-
         cur.close()
 
         return render_template('all_reos.html', title='Список объектов недвижимости', real_estate_objects=real_estate_objects)
@@ -355,7 +380,20 @@ def all_reos():
 
 @app.route('/reo_inf', methods=['GET', 'POST'])
 def reo_inf():
-    if request.method == 'GET':
+    if request.method == 'POST':
+        reo_number = request.args['reo_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('delete_real_estate_objects', [reo_number])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('all_reos'))
+
+    elif request.method == 'GET':
 
         reo_number = request.args['reo_number']
         emp_number = request.args['emp_number']
@@ -404,12 +442,6 @@ def add_employee():
 
     else:
         return render_template('add_employee.html', title='Добавить сотрудника')
-
-
-@app.route('/remove_employee', methods=['GET', 'POST'])
-def remove_employee():
-    if request.method == 'GET':
-        return render_template('remove_employee.html', title='Удалить сотрдуника')
 
 
 @app.route('/all_employees', methods=['GET', 'POST'])

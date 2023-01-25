@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="clients-content">
+    <h1 class="page-title">Найти объект недвижимости</h1>
+    <form class="clients-form" method="post" autocomplete="off">
+            <div>
+                <input class="clients-input" type="text" name="reo_address" placeholder="Адрес" id="reo_address">
+            </div>
+
+            <input class="clients-input-button" type="submit" value="Найти объект">
+
+    </form>
+</div>
+{% endblock %}

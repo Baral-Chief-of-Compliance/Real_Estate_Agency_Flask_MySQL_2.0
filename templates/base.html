@@ -27,7 +27,7 @@
                 <button onclick="myFunction('reoDropdown')" class="nav-selection">Объекты недвижимости</button>
                 <div id="reoDropdown" class="dropdown-content">
                     <a href="{{ url_for('add_reo')}}">Добавить</a>
-                    <a href="{{ url_for('remove_reo')}}">Удалить</a>
+                    <a href="{{ url_for('search_reo')}}">Найти</a>
                     <a href="{{ url_for('all_reos')}}">Список</a>
                 </div>
             </div>
@@ -36,7 +36,6 @@
                 <button onclick="myFunction('employeeDropdown')" class="nav-selection">Сотрудники</button>
                 <div id="employeeDropdown" class="dropdown-content">
                     <a href="{{ url_for('add_employee')}}">Добавить</a>
-                    <a href="{{ url_for('remove_employee')}}">Удалить</a>
                     <a href="{{ url_for('all_employees')}}">Список</a>
                 </div>
             </div>
