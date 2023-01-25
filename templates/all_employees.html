@@ -1,5 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Список сотрудников</h1>
+    <div class="clients-content">
+        <h1 class="page-title">Список сотрудников</h1>
+        {% if employees %}
+         <table>
+            <thead>
+                <tr>
+                    <th>
+                       Фамилия
+                    </th>
+                    <th>
+                        Имя
+                    </th>
+                    <th>
+                       Отчество
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('employee_inf', employee_number=emp[0]) }}">{{ emp[1] }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('employee_inf', employee_number=emp[0]) }}">{{ emp[2] }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('employee_inf', employee_number=emp[0]) }}">{{ emp[3] }}</a>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="absent">Пока ничего нет</div>
+        {% endif %}
+
+    </div>
 {% endblock %}

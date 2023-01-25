@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="clients-content">
+        <h1 class="page-title">Информация о</h1>
+        <h1 class="page-title">сотруднике</h1>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Фамилия:
+            </div>
+            <div>
+                {{ employee_inf[1] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Имя:
+            </div>
+            <div>
+                {{ employee_inf[2] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Отчество:
+            </div>
+            <div>
+                {{ employee_inf[3] }}
+            </div>
+        </div>
+
+        <div>
+            <form method="post">
+                <input class="delete-button" type="submit" value="Удалить клиента">
+            </form>
+        </div>
+    </div>
+{% endblock %}

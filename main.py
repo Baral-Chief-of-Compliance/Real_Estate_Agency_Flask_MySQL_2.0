@@ -316,7 +316,46 @@ def remove_employee():
 @app.route('/all_employees', methods=['GET', 'POST'])
 def all_employees():
     if request.method == 'GET':
-        return render_template('all_employees.html', title='Список сотрудников')
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_employee')
+
+        employees = cur.fetchall()
+
+        cur.close()
+
+        return render_template('all_employees.html', title='Список сотрудников', employees=employees)
+
+
+@app.route('/employee_inf', methods=['GET', 'POST'])
+def employee_inf():
+
+    if request.method == 'GET':
+
+        employee_number = request.args['employee_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('employee_inf', [employee_number])
+
+        employee_inf = cur.fetchone()
+
+        return render_template('employee.html', title=f'{employee_inf[1]} {employee_inf[2]} {employee_inf[3]}', employee_inf=employee_inf)
+
+    elif request.method == 'POST':
+
+        employee_number = request.args['employee_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('delete_employee', [employee_number])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('all_employees'))
 
 
 '''APPLICATION'''
