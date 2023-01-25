@@ -4,6 +4,7 @@
 <div class="clients-content">
     <h1 class="page-title">Список клиентов</h1>
     <div class="table-name">Физические лица</div>
+    {% if clients_phys %}
     <table>
         <thead>
             <tr>
@@ -54,9 +55,12 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <div class="absent">Пока ничего нет</div>
+    {% endif %}
 
     <div class="table-name">Юридические лица</div>
-
+    {% if clients_entity %}
     <table>
         <thead>
             <tr>
@@ -113,5 +117,9 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <div class="absent">Пока ничего нет</div>
+    {% endif %}
+
 </div>
 {% endblock %}

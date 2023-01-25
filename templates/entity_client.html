@@ -1,7 +1,9 @@
-{% extends "base.html" %}
+<link rel="stylesheet" href="../static/css/base.css">{% extends "base.html" %}
 
 {% block content %}
     <div class="clients-content">
+        <h1 class="page-title">Информация о</h1>
+        <h1 class="page-title">юридическом лице</h1>
 
         <div class="inf-row">
             <div class="name-of-inf-row">
@@ -64,6 +66,12 @@
             <div>
                 {{ results_entity[7] }}
             </div>
+        </div>
+
+        <div>
+            <form method="post">
+                <input class="delete-button" type="submit" value="Удалить клиента">
+            </form>
         </div>
     </div>
 {% endblock %}

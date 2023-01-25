@@ -213,6 +213,20 @@ def phys_client():
 
         return render_template('phys_client.html', title=f'{results_phys[1]} {results_phys[2]} {results_phys[3]}', results_phys=results_phys)
 
+    elif request.method == 'POST':
+
+        client_number = request.args['cl_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('delete_phys_client', [client_number])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('all_clients'))
+
 
 @app.route('/entity_client', methods=['GET', 'POST'])
 def entity_client():
@@ -230,6 +244,21 @@ def entity_client():
         cur.close()
 
         return render_template('entity_client.html', title=f'{results_entity[1]} {results_entity[2]} {results_entity[3]}', results_entity=results_entity)
+
+    elif request.method == 'POST':
+
+        client_number = request.args['cl_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('delete_entity_client', [client_number])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('all_clients'))
+
 
 
 ''' REO '''
