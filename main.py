@@ -264,8 +264,68 @@ def entity_client():
 ''' REO '''
 @app.route('/add_reo', methods=['GET', 'POST'])
 def add_reo():
-    if request.method == 'GET':
-        return render_template('add_reo.html', title='Добавить объект недвижимости')
+
+    if request.method == 'POST':
+
+        reo_room_type = request.form['reo_room_type']
+        reo_type_of_operation = request.form['reo_type_of_operation']
+        reo_district = request.form['reo_district']
+        reo_address = request.form['reo_address']
+        reo_employee_number = request.form['reo_employee_number']
+        reo_floor = request.form['reo_floor']
+        reo_number_of_rooms = request.form['reo_number_of_rooms']
+        reo_availability_of_the_Internet = request.form['reo_availability_of_the_Internet']
+        reo_availability_of_furniture = request.form['reo_availability_of_furniture']
+        reo_price = request.form['reo_price']
+
+
+        reo_employee_number = reo_employee_number.split()
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_employee')
+
+        employees = cur.fetchall()
+
+        cur.close()
+
+        emp_number = 0
+
+        for emp in employees:
+            if (emp[1] == reo_employee_number[0] and emp[2] == reo_employee_number[1] and emp[3] == reo_employee_number[2]):
+                emp_number = emp[0]
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('add_real_estate_object', [reo_room_type,
+                                                reo_type_of_operation,
+                                                reo_district,
+                                                reo_address,
+                                                emp_number,
+                                                reo_floor,
+                                                reo_number_of_rooms,
+                                                reo_availability_of_the_Internet,
+                                                reo_availability_of_furniture,
+                                                reo_price
+                                                ]
+        )
+
+        cur.close()
+
+        mysql.connection.commit()
+
+        return redirect(url_for('all_reos'))
+
+    elif request.method == 'GET':
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_employee')
+
+        employees = cur.fetchall()
+
+        cur.close()
+
+        return render_template('add_reo.html', title='Добавить объект недвижимости', employees=employees)
 
 
 @app.route('/remove_reo', methods=['GET', 'POST'])
@@ -295,7 +355,7 @@ def add_employee():
         emp_surname = request.form["emp_surname"]
         emp_patronymic = request.form["emp_patronymic"]
 
-        cur.callproc('add_employee', [emp_name, emp_surname, emp_patronymic])
+        cur.callproc('add_employee', [emp_surname, emp_name, emp_patronymic])
 
         mysql.connection.commit()
 
