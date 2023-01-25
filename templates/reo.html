@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="clients-content">
+        <h1 class="page-title">Информация об</h1>
+        <h1 class="page-title">объекте</h1>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Вид помещения:
+            </div>
+            <div>
+                {{ inf_reo[1] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Тип операции:
+            </div>
+            <div>
+                {{ inf_reo[2] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Район:
+            </div>
+            <div>
+                {{ inf_reo[3] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Адрес:
+            </div>
+            <div>
+                {{ inf_reo[4] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Фамилия сотрудника:
+            </div>
+            <div>
+                {{ inf_emp[1] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Имя сотрудника:
+            </div>
+            <div>
+                {{ inf_emp[2] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Отчество сотрудника:
+            </div>
+            <div>
+                {{ inf_emp[3] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Этаж:
+            </div>
+            <div>
+                {{ inf_reo[6] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Комнаты:
+            </div>
+            <div>
+                {{ inf_reo[7] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Интернет:
+            </div>
+            <div>
+                {{ inf_reo[8] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Мебель:
+            </div>
+            <div>
+                {{ inf_reo[9] }}
+            </div>
+        </div>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Цена:
+            </div>
+            <div>
+                {{ inf_reo[10] }} ₽
+            </div>
+        </div>
+
+
+        <div>
+            <form method="post">
+                <input class="delete-button" type="submit" value="Удалить объект">
+            </form>
+        </div>
+    </div>
+{% endblock %}

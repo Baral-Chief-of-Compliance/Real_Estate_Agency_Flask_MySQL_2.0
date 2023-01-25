@@ -353,6 +353,32 @@ def all_reos():
         return render_template('all_reos.html', title='Список объектов недвижимости', real_estate_objects=real_estate_objects)
 
 
+@app.route('/reo_inf', methods=['GET', 'POST'])
+def reo_inf():
+    if request.method == 'GET':
+
+        reo_number = request.args['reo_number']
+        emp_number = request.args['emp_number']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('real_estate_objects_inf', [reo_number])
+
+        inf_reo = cur.fetchone()
+
+        cur.close()
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('employee_inf', [emp_number])
+
+        inf_emp = cur.fetchone()
+
+        cur.close()
+
+        return render_template('reo.html', title='Информация об объекте недвижимости', inf_reo=inf_reo, inf_emp=inf_emp)
+
+
 ''' EMPLOYEE '''
 @app.route('/add_employee', methods=['GET', 'POST'])
 def add_employee():
