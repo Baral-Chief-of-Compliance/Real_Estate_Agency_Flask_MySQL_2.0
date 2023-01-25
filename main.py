@@ -331,13 +331,26 @@ def add_reo():
 @app.route('/remove_reo', methods=['GET', 'POST'])
 def remove_reo():
     if request.method == 'GET':
+
         return render_template('remove_reo.html', title='Удалить объект недвижимости')
 
 
 @app.route('/all_reos', methods=['GET', 'POST'])
 def all_reos():
     if request.method == 'GET':
-        return render_template('all_reos.html', title='Список объектов недвижимости')
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_real_estate_objects')
+
+        real_estate_objects = cur.fetchall()
+
+        for res in real_estate_objects:
+            print(res[10])
+
+        cur.close()
+
+        return render_template('all_reos.html', title='Список объектов недвижимости', real_estate_objects=real_estate_objects)
 
 
 ''' EMPLOYEE '''

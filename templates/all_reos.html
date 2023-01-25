@@ -1,5 +1,81 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Список объектов недвижимости</h1>
+<div class="clients-content">
+    <h1 class="page-title">Список объектов недвижимости</h1>
+
+    {% if real_estate_objects %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                   Вид помещения
+                </th>
+                <th>
+                    Тип операция
+                </th>
+                <th>
+                   Район
+                </th>
+                <th>
+                    Адрес
+                </th>
+                <th>
+                    Этаж
+                </th>
+                <th>
+                    Кол-во комнат
+                </th>
+                <th>
+                    Интернет
+                </th>
+                <th>
+                    Мебель
+                </th>
+                <th>
+                    Цена
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for res in real_estate_objects %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[1] }}</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[2] }}</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[3] }}</a>
+                </td>
+                <td>
+                   <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[4] }}</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[6] }}</a>
+                </td>
+                <td>
+                   <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[7] }}</a>
+                </td>
+                <td>
+                   <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[8] }}</a>
+                </td>
+                <td>
+                   <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[9] }}</a>
+                </td>
+                <td>
+                   <a href="{{ url_for('phys_client', cl_number=res[0]) }}">{{ res[10] }}</a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="absent">Пока ничего нет</div>
+    {% endif %}
+
+</div>
 {% endblock %}
