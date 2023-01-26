@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="clients-content">
+    <h1 class="page-title">Добавить историю просмотра</h1>
+    <h1 class="page-title">Для {{ reo_address }}</h1>
+    <form class="clients-form" method="post" autocomplete="off">
+            <div>
+                <input  list='client' class="clients-input" type="text" name="client-data" placeholder="Клиент" id="client-data">
+            </div>
+
+            <datalist id = "client">
+                {% for client in clients %}
+                <option value= '{{client[1]}} {{client[2]}} {{client[3]}} {{client[5]}}' />
+                {% endfor %}
+            </datalist>
+
+        <div class="inf-row">
+            <div class="name-of-inf-row">
+                Дата просмотра:
+            </div>
+            <div>
+                <input type="date" name="date_view">
+            </div>
+        </div>
+
+            <input class="clients-input-button" type="submit" value="Добавить историю">
+
+    </form>
+</div>
+{% endblock %}

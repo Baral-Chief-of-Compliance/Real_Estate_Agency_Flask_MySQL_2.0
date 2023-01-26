@@ -489,6 +489,58 @@ def employee_inf():
         return redirect(url_for('all_employees'))
 
 
+
+'''viewing_history'''
+
+@app.route('/add_viewing_history', methods=['GET', 'POST'])
+def add_viewing_history():
+
+    if request.method == 'POST':
+        reo_number = request.args['reo_number']
+        emp_number = request.args['emp_number']
+        date_view = request.form['date_view']
+
+        print(date_view)
+
+        client_inf = request.form['client-data']
+        client_inf = client_inf.split()
+        client_phone_number = client_inf[3]
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('search_client_with_phone', [client_phone_number])
+
+        client_number = cur.fetchone()
+
+        cur.close()
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('add_viewing_history', [client_number, reo_number, date_view])
+
+        cur.close()
+
+        mysql.connection.commit()
+
+
+        return redirect(url_for('reo_inf', reo_number=reo_number, emp_number=emp_number))
+
+    if request.method == 'GET':
+
+        reo_number = request.args['reo_number']
+        reo_address = request.args['reo_address']
+
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_all_clients')
+
+        clients = cur.fetchall()
+
+        cur.close()
+
+        return render_template('add_viewing_history.html', reo_number=reo_number, reo_address=reo_address, clients=clients)
+
+
 '''APPLICATION'''
 @app.route('/add_application', methods=['GET', 'POST'])
 def add_application():
