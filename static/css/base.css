@@ -152,7 +152,7 @@ body{
 }
 
 .page-title{
-    color: #696969;
+    color: #00bfff;
     margin-bottom: 15px;
 
 }
@@ -262,4 +262,36 @@ thead{
 .delete-button:hover{
     border: 5px solid #ff4000;
     background-color: #ff4000;
+}
+
+.viewing-history-add{
+    width: 500px;
+    padding: 10px;
+    border: 5px solid #00a851;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    background-color: #00a851;
+    font-size: 24px;
+    border-radius: 2px;
+    color: white;
+    text-align: center;
+}
+
+.viewing-history-add a{
+    text-decoration: none;
+    color: white;
+
+}
+
+.viewing-history-add:hover{
+    border: 5px solid #0fff83;
+    background-color: #0fff83;
+}
+
+.name-viewing-history{
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #00bfff;
 }

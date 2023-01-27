@@ -414,7 +414,15 @@ def reo_inf():
 
         cur.close()
 
-        return render_template('reo.html', title='Информация об объекте недвижимости', inf_reo=inf_reo, inf_emp=inf_emp)
+        cur = mysql.connection.cursor()
+
+        cur.callproc('show_viewing_history_reo', [reo_number])
+
+        viewing_history = cur.fetchall()
+
+        cur.close()
+
+        return render_template('reo.html', title='Информация об объекте недвижимости', inf_reo=inf_reo, inf_emp=inf_emp, viewing_history=viewing_history)
 
 
 ''' EMPLOYEE '''
@@ -521,7 +529,6 @@ def add_viewing_history():
         cur.close()
 
         mysql.connection.commit()
-
 
         return redirect(url_for('reo_inf', reo_number=reo_number, emp_number=emp_number))
 
