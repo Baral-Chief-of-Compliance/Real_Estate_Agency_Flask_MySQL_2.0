@@ -1,5 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Все заявки</h1>
+    <div class="clients-content">
+        <h1 class="page-title">Список заявок</h1>
+        {% if all_aplications %}
+         <table>
+            <thead>
+                <tr>
+                    <th>
+                       Фамилия клиента
+                    </th>
+                    <th>
+                        Имя клиента
+                    </th>
+                    <th>
+                       Отчество клиента
+                    </th>
+                    <th>
+                       Адрес
+                    </th>
+                    <th>
+                       Сделка
+                    </th>
+                    <th>
+                       Дата
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for app in all_aplications %}
+                <tr>
+                    <td>
+                        {{ app[0] }}
+                    </td>
+                    <td>
+                        {{ app[1] }}
+                    </td>
+                    <td>
+                       {{ app[2] }}
+                    </td>
+                     <td>
+                       {{ app[3] }}
+                    </td>
+                    <td>
+                       {{ app[4] }}
+                    </td>
+                    <td>
+                       {{ app[5] }}
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="absent">Пока ничего нет</div>
+        {% endif %}
+
+    </div>
 {% endblock %}

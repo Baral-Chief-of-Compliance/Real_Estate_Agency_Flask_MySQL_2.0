@@ -689,7 +689,7 @@ def add_application():
             cur.callproc('add_aplication', [reo_number, client_number, date_of_conclusion, session['id']])
 
             cur.close()
-            
+
             mysql.connection.commit()
 
             return redirect(url_for('all_applications'))
@@ -730,7 +730,16 @@ def remove_application():
 def all_applications():
     if 'loggedin' in session:
         if request.method == 'GET':
-            return render_template('all_applications.html', login=session['username'], title='Список заявок')
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('show_all_applications')
+
+            all_aplications = cur.fetchall()
+
+            cur.close()
+
+            return render_template('all_applications.html', login=session['username'], title='Список заявок', all_aplications=all_aplications)
 
     return redirect(url_for('login'))
 
