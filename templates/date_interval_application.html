@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="clients-content">
+    <h1 class="page-title">Заявки за период</h1>
+        <form class="clients-form" method="post" autocomplete="off">
+
+            <div class="label-info">
+                Начало периода
+            </div>
+            <input class="clients-input" type="date" name="start_of_interval">
+            <div class="label-info">
+                Конец периода
+            </div>
+            <input class="clients-input" type="date" name="end_of_interval">
+
+            <input class="clients-input-button" type="submit" value="Натий заявки">
+
+        </form>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="clients-content">
+    <h1 class="page-title">Заявки с {{start_of_interval}} по {{end_of_interval}}</h1>
+
+    {% if search_result %}
+    <table>
+        <thead>
+                <tr>
+                    <th>
+                       Фамилия клиента
+                    </th>
+                    <th>
+                        Имя клиента
+                    </th>
+                    <th>
+                       Отчество клиента
+                    </th>
+                    <th>
+                       Адрес
+                    </th>
+                    <th>
+                       Сделка
+                    </th>
+                    <th>
+                       Дата
+                    </th>
+                </tr>
+        </thead>
+
+        <tbody>
+            {% for res in search_result %}
+            <tr>
+                <td>
+                    {{ res[0] }}
+                </td>
+                <td>
+                    {{ res[1] }}
+                </td>
+                <td>
+                   {{ res[2] }}
+                </td>
+                <td>
+                   {{ res[3] }}
+                </td>
+                <td>
+                    {{ res[4] }}
+                </td>
+                <td>
+                   {{ res[5] }}
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="absent">По вашему запросу ничего нет</div>
+    {% endif %}
+
+</div>
+{% endblock %}

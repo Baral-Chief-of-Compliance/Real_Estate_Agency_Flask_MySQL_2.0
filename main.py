@@ -717,11 +717,41 @@ def add_application():
     return redirect(url_for('login'))
 
 
-@app.route('/remove_application', methods=['GET', 'POST'])
-def remove_application():
+@app.route('/date_interval_application', methods=['GET', 'POST'])
+def date_interval_application():
     if 'loggedin' in session:
+
+        if request.method == 'POST':
+            start_of_interval = request.form['start_of_interval']
+            end_of_interval = request.form['end_of_interval']
+
+            return redirect(url_for('result_date_interval', start_of_interval=start_of_interval, end_of_interval=end_of_interval))
+
+        elif request.method == 'GET':
+            return render_template('date_interval_application.html', login=session['username'], title='Интервал дат')
+
+    return redirect(url_for('login'))
+
+
+@app.route('/result_date_interval', methods=['GET'])
+def result_date_interval():
+
+    if 'loggedin' in session:
+
         if request.method == 'GET':
-            return render_template('remove_application.html', login=session['username'], title='Удалить заявку')
+
+            start_of_interval = request.args['start_of_interval']
+            end_of_interval = request.args['end_of_interval']
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('show_all_applications_in_between', [start_of_interval, end_of_interval])
+
+            search_result = cur.fetchall()
+
+            cur.close()
+
+            return render_template('result_date_interval.html', search_result=search_result, start_of_interval=start_of_interval, end_of_interval=end_of_interval)
 
     return redirect(url_for('login'))
 
