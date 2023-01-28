@@ -3,14 +3,27 @@
 {% block content %}
 <div class="clients-content">
     <h1 class="page-title">Добавить заявку</h1>
-        <form class="clients-form" method="post">
-            <input class="clients-input" type="text" name="cl_name" placeholder="Клиент" id="cl_number" required>
-            <input class="clients-input" type="text" name="cl_surname" placeholder="Сотрудник" id="reo_number" required>
+        <form class="clients-form" method="post" autocomplete="off">
+            <input list="clients" class="clients-input" type="text" name="cl_data" placeholder="Клиент" required>
+
+            <datalist id="clients">
+                {% for client in clients %}
+                    <option>{{client[0]}} {{client[1]}} {{client[2]}} {{client[3]}}</option>
+                {% endfor %}
+            </datalist>
+
+            <input list="reo" class="clients-input" type="text" name="reo_data" placeholder="Объект" required>
+
+            <datalist id="reo">
+                {% for reo in real_estate_objects %}
+                    <option>{{reo[4]}}</option>
+                {% endfor %}
+            </datalist>
 
             <div class="label-info">
                 Дата заключения
             </div>
-            <input class="clients-input" type="date" name="cl_patronymic" placeholder="Дата заключения" id="date_of_conclusion">
+            <input class="clients-input" type="date" name="date_of_conclusion" placeholder="Дата заключения" id="date_of_conclusion">
 
             <input class="clients-input-button" type="submit" value="Добавить заявку">
 

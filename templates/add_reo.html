@@ -5,7 +5,14 @@
     <h1 class="page-title">Добавить объект недвижимости</h1>
         <form class="clients-form" method="post" autocomplete="off">
             <input class="clients-input" type="text" name="reo_room_type" placeholder="Вид помещения" id="reo_room_type" required>
-            <input class="clients-input" type="text" name="reo_type_of_operation" placeholder="Тип операции" id="reo_type_of_operation" required>
+            <input list="variant_of_operation" class="clients-input" type="text" name="reo_type_of_operation" placeholder="Тип операции" id="reo_type_of_operation" required>
+
+            <datalist id="variant_of_operation">
+                <option>покупка</option>
+                <option>продажа</option>
+                <option>аренда</option>
+            </datalist>
+
             <input class="clients-input" type="text" name="reo_district" placeholder="Район" id="reo_district">
             <input class="clients-input" type="text" name="reo_address" placeholder="Адрес" id="reo_address">
 

@@ -22,8 +22,13 @@ def home():
 
             cur = mysql.connection.cursor()
 
-            cur
-            return render_template('home.html', title='Главная')
+            cur.callproc('show_operator_inf', [session['id']])
+
+            operator_inf = cur.fetchone()
+
+            cur.close()
+
+            return render_template('home.html', title='Главная', operator_inf=operator_inf, login=session['username'])
 
     return redirect(url_for('login'))
 
@@ -117,7 +122,7 @@ def add_client():
             return redirect(url_for('add_client'))
 
         elif request.method == 'GET':
-            return render_template('add_client.html', title='Добавить клиента')
+            return render_template('add_client.html', title='Добавить клиента', login=session['username'])
 
         return redirect(url_for('login'))
 
@@ -142,7 +147,7 @@ def search_client():
             return redirect(url_for('search_results_phone', cl_phone=cl_phone))
 
         elif request.method == 'GET':
-            return render_template('search_client.html', title='Поиск клиента')
+            return render_template('search_client.html', title='Поиск клиента', login=session['username'])
 
     return redirect(url_for('login'))
 
@@ -182,7 +187,7 @@ def search_results_phone():
             else:
                 cur.close()
 
-            return render_template('search_results_phone.html', title='Поиск по номеру телефона', cl_phone=cl_phone, results_phys=results_phys, results_entity=results_entity)
+            return render_template('search_results_phone.html', title='Поиск по номеру телефона', cl_phone=cl_phone, results_phys=results_phys, results_entity=results_entity, login=session['username'])
 
         return redirect(url_for('login'))
 
@@ -226,7 +231,7 @@ def search_results_surname_name():
 
                 cur.close()
 
-            return render_template('search_results_surname_name.html', title='Поиск по Фамилии, Имени', results_phys=results_phys, results_entity=results_entity, cl_surname=cl_surname, cl_name=cl_name, cl_patronymic=cl_patronymic)
+            return render_template('search_results_surname_name.html', title='Поиск по Фамилии, Имени', login=session['username'], results_phys=results_phys, results_entity=results_entity, cl_surname=cl_surname, cl_name=cl_name, cl_patronymic=cl_patronymic)
 
         return redirect(url_for('login'))
 
@@ -252,7 +257,7 @@ def all_clients():
 
             cur.close()
 
-            return render_template('all_clients.html', title='Список клиентов', clients_phys=clients_phys, clients_entity=clients_entity)
+            return render_template('all_clients.html', title='Список клиентов', login=session['username'], clients_phys=clients_phys, clients_entity=clients_entity)
 
     return redirect(url_for('login'))
 
@@ -273,7 +278,7 @@ def phys_client():
 
             cur.close()
 
-            return render_template('phys_client.html', title=f'{results_phys[1]} {results_phys[2]} {results_phys[3]}', results_phys=results_phys)
+            return render_template('phys_client.html', title=f'{results_phys[1]} {results_phys[2]} {results_phys[3]}', results_phys=results_phys, login=session['username'])
 
         elif request.method == 'POST':
 
@@ -308,7 +313,7 @@ def entity_client():
 
             cur.close()
 
-            return render_template('entity_client.html', title=f'{results_entity[1]} {results_entity[2]} {results_entity[3]}', results_entity=results_entity)
+            return render_template('entity_client.html', title=f'{results_entity[1]} {results_entity[2]} {results_entity[3]}', results_entity=results_entity, login=session['username'])
 
         elif request.method == 'POST':
 
@@ -394,7 +399,7 @@ def add_reo():
 
             cur.close()
 
-            return render_template('add_reo.html', title='Добавить объект недвижимости', employees=employees)
+            return render_template('add_reo.html', title='Добавить объект недвижимости', login=session['username'], employees=employees)
 
     return redirect(url_for('login'))
 
@@ -410,7 +415,7 @@ def search_reo():
 
         elif request.method == 'GET':
 
-            return render_template('search_reo.html', title='Найти объект недвижимости')
+            return render_template('search_reo.html', title='Найти объект недвижимости', login=session['username'])
 
     return redirect(url_for('login'))
 
@@ -435,7 +440,7 @@ def search_result_reo():
 
             cur.close()
 
-            return render_template('search_result_reo.html', search_result=search_result)
+            return render_template('search_result_reo.html', title='Результаты поиска', search_result=search_result, login=session['username'])
 
     return redirect(url_for('login'))
 
@@ -454,7 +459,7 @@ def all_reos():
 
             cur.close()
 
-            return render_template('all_reos.html', title='Список объектов недвижимости', real_estate_objects=real_estate_objects)
+            return render_template('all_reos.html', title='Список объектов недвижимости', login=session['username'], real_estate_objects=real_estate_objects)
 
     return redirect(url_for('login'))
 
@@ -505,7 +510,7 @@ def reo_inf():
 
             cur.close()
 
-            return render_template('reo.html', title='Информация об объекте недвижимости', inf_reo=inf_reo, inf_emp=inf_emp, viewing_history=viewing_history)
+            return render_template('reo.html', title='Информация об объекте недвижимости', login=session['username'],  inf_reo=inf_reo, inf_emp=inf_emp, viewing_history=viewing_history)
 
     return redirect(url_for('login'))
 
@@ -537,7 +542,7 @@ def add_employee():
             return redirect(url_for('add_employee'))
 
         else:
-            return render_template('add_employee.html', title='Добавить сотрудника')
+            return render_template('add_employee.html', title='Добавить сотрудника', login=session['username'])
 
     return redirect(url_for('login'))
 
@@ -556,7 +561,7 @@ def all_employees():
 
             cur.close()
 
-            return render_template('all_employees.html', title='Список сотрудников', employees=employees)
+            return render_template('all_employees.html', title='Список сотрудников', login=session['username'], employees=employees)
 
     return redirect(url_for('login'))
 
@@ -575,7 +580,7 @@ def employee_inf():
 
             employee_inf = cur.fetchone()
 
-            return render_template('employee.html', title=f'{employee_inf[1]} {employee_inf[2]} {employee_inf[3]}', employee_inf=employee_inf)
+            return render_template('employee.html', title=f'{employee_inf[1]} {employee_inf[2]} {employee_inf[3]}', login=session['username'], employee_inf=employee_inf)
 
         elif request.method == 'POST':
 
@@ -643,7 +648,7 @@ def add_viewing_history():
 
             cur.close()
 
-            return render_template('add_viewing_history.html', reo_number=reo_number, reo_address=reo_address, clients=clients)
+            return render_template('add_viewing_history.html', title='Добавить истории просмтора',login=session['username'], reo_number=reo_number, reo_address=reo_address, clients=clients)
 
     return redirect(url_for('login'))
 
@@ -655,8 +660,59 @@ def add_viewing_history():
 def add_application():
     if 'loggedin' in session:
 
-        if request.method == 'GET':
-            return render_template('add_application.html', title='Добавить заявку')
+        if request.method == 'POST':
+
+            cl_data = request.form['cl_data'].split()
+            reo_data = request.form['reo_data']
+            date_of_conclusion = request.form['date_of_conclusion']
+
+            cl_phone = cl_data[3]
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('search_client_with_phone', [cl_phone])
+
+            client_number = cur.fetchone()
+
+            cur.close()
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('search_reo_with_address', [reo_data])
+
+            reo_number = cur.fetchone()
+
+            cur.close()
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('add_aplication', [reo_number, client_number, date_of_conclusion, session['id']])
+
+            cur.close()
+            
+            mysql.connection.commit()
+
+            return redirect(url_for('all_applications'))
+
+        elif request.method == 'GET':
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('show_real_estate_objects')
+
+            real_estate_objects = cur.fetchall()
+
+            cur.close()
+
+            cur = mysql.connection.cursor()
+
+            cur.callproc('show_client_for_application')
+
+            clients = cur.fetchall()
+
+            cur.close()
+
+            return render_template('add_application.html', login=session['username'], title='Добавить заявку', real_estate_objects=real_estate_objects, clients=clients)
 
     return redirect(url_for('login'))
 
@@ -665,7 +721,7 @@ def add_application():
 def remove_application():
     if 'loggedin' in session:
         if request.method == 'GET':
-            return render_template('remove_application.html', title='Удалить заявку')
+            return render_template('remove_application.html', login=session['username'], title='Удалить заявку')
 
     return redirect(url_for('login'))
 
@@ -674,7 +730,7 @@ def remove_application():
 def all_applications():
     if 'loggedin' in session:
         if request.method == 'GET':
-            return render_template('all_applications.html', title='Список заявок')
+            return render_template('all_applications.html', login=session['username'], title='Список заявок')
 
     return redirect(url_for('login'))
 

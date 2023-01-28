@@ -51,13 +51,13 @@
 
             <div class="nav-operator-info">
                 <div class="nav-operator-name">
-                    admin
+                    {{ login }}
                 </div>
                 <div class="nav-operator-del">
                     |
                 </div>
                 <div class="nav-operator-exit">
-                    <a href="{{ url_for('logout')}}">выход</a>
+                    <a id='a-exit' href="{{ url_for('logout')}}">выход</a>
                 </div>
             </div>
 
