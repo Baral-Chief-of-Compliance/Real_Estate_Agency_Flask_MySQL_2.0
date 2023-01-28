@@ -114,9 +114,6 @@
 
         <div class="name-viewing-history">История просмотра</div>
 
-        <div class="viewing-history-add">
-            <a href="{{ url_for('add_viewing_history', reo_number=inf_reo[0], reo_address=inf_reo[4], emp_number=inf_emp[0] )}}">Добавить историю просмотра</a>
-        </div>
 
         <div>
             {% if viewing_history %}
@@ -160,6 +157,11 @@
             {% else %}
                 <div class="absent">История просмотра отсутствует</div>
             {% endif %}
+        </div>
+
+
+        <div class="viewing-history-add">
+            <a href="{{ url_for('add_viewing_history', reo_number=inf_reo[0], reo_address=inf_reo[4], emp_number=inf_emp[0] )}}">Добавить историю просмотра</a>
         </div>
 
 
