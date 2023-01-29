@@ -774,5 +774,25 @@ def all_applications():
     return redirect(url_for('login'))
 
 
+'''RENT'''
+
+
+# @app.route('/add_rent')
+# def add_rent():
+#
+#     if request.method == 'GET':
+#
+#         cur = mysql.connection.cursor()
+#
+#         cur.callproc('')
+#
+#     return render_template('add_rent.html', title='Добавить аренду', login=session['username'])
+#
+#
+# @app.route('/all_rents')
+# def add_rent():
+#     return render_template('all_rents.html', title='Список аренд', login=session['username'])
+
+
 if __name__ == '__main__':
     app.run(debug=True)
