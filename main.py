@@ -5,8 +5,8 @@ import os
 import MySQLdb.cursors
 from config import Config
 
-load_dotenv()
 
+load_dotenv()
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -19,18 +19,35 @@ app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 mysql = MySQL(app)
 
 
+def call_stored_procedure(name_of_procedure, *args, commit, fetchall):
+
+    cur = mysql.connection.cursor()
+
+    cur.callproc(name_of_procedure, *args)
+
+    if commit:
+        cur.close()
+
+        mysql.connection.commit()
+
+        result_of_procedure = None
+    else:
+
+        if fetchall:
+            result_of_procedure = cur.fetchall()
+            cur.close()
+        else:
+            result_of_procedure = cur.fetchone()
+            cur.close()
+
+    return result_of_procedure
+
+
 @app.route('/', methods=['GET'])
 def home():
     if 'loggedin' in session:
         if request.method == 'GET':
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_operator_inf', [session['id']])
-
-            operator_inf = cur.fetchone()
-
-            cur.close()
+            operator_inf = call_stored_procedure('show_operator_inf', [session['id']], commit=False, fetchall=False)
 
             return render_template('home.html', title='Главная', operator_inf=operator_inf, login=session['username'])
 
@@ -86,8 +103,6 @@ def add_client():
                 request.form.get("physical_person") != None
         ):
 
-            cur = mysql.connection.cursor()
-
             cl_name = request.form["cl_name"]
             cl_surname = request.form["cl_surname"]
             cl_patronymic = request.form["cl_patronymic"]
@@ -95,11 +110,7 @@ def add_client():
             clients_type = request.form["clients_type"]
             cl_address = request.form["cl_address"]
 
-            cur.callproc('add_client_phys', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, cl_address])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('add_client_phys', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, cl_address], commit=True, fetchall=False)
 
             return redirect(url_for('add_client'))
 
@@ -117,11 +128,7 @@ def add_client():
             company_name = request.form["company_name"]
             inn = request.form["inn"]
 
-            cur.callproc('add_client_entity', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, company_name, inn])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('add_client_entity', [cl_surname, cl_name, cl_patronymic, clients_type, cl_ph_number, company_name, inn], commit=True, fetchall=False)
 
             return redirect(url_for('add_client'))
 
@@ -173,20 +180,9 @@ def search_results_phone():
             client_number = cur.fetchone()
 
             if client_number != None:
+                results_phys = call_stored_procedure('phys_client_inf', [client_number], commit=False, fetchall=True)
 
-                cur.callproc('phys_client_inf', [client_number])
-
-                results_phys = cur.fetchall()
-
-                cur.close()
-
-                cur = mysql.connection.cursor()
-
-                cur.callproc('entity_client_inf', [client_number])
-
-                results_entity = cur.fetchall()
-
-                cur.close()
+                results_entity = call_stored_procedure('entity_client_inf', [client_number], commit=False, fetchall=True)
 
             else:
                 cur.close()
@@ -216,20 +212,9 @@ def search_results_surname_name():
             client_number = cur.fetchone()
 
             if client_number != None:
+                results_phys = call_stored_procedure('phys_client_inf', [client_number], commit=False, fetchall=True)
 
-                cur.callproc('phys_client_inf', [client_number])
-
-                results_phys = cur.fetchall()
-
-                cur.close()
-
-                cur = mysql.connection.cursor()
-
-                cur.callproc('entity_client_inf', [client_number])
-
-                results_entity = cur.fetchall()
-
-                cur.close()
+                results_entity = call_stored_procedure('entity_client_inf', [client_number], commit=False, fetchall=True)
 
             else:
 
@@ -244,22 +229,9 @@ def search_results_surname_name():
 def all_clients():
     if 'loggedin' in session:
         if request.method == 'GET':
+            clients_phys = call_stored_procedure('show_client_phys', commit=False, fetchall=True)
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_client_phys')
-
-            clients_phys = cur.fetchall()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_client_entity')
-
-            clients_entity = cur.fetchall()
-
-            cur.close()
+            clients_entity = call_stored_procedure('show_client_entity', commit=False, fetchall=True)
 
             return render_template('all_clients.html', title='Список клиентов', login=session['username'], clients_phys=clients_phys, clients_entity=clients_entity)
 
@@ -274,13 +246,7 @@ def phys_client():
 
             client_number = request.args['cl_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('phys_client_inf', [client_number])
-
-            results_phys = cur.fetchone()
-
-            cur.close()
+            results_phys = call_stored_procedure('phys_client_inf', [client_number], commit=False, fetchall=False)
 
             return render_template('phys_client.html', title=f'{results_phys[1]} {results_phys[2]} {results_phys[3]}', results_phys=results_phys, login=session['username'])
 
@@ -288,13 +254,7 @@ def phys_client():
 
             client_number = request.args['cl_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('delete_phys_client', [client_number])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('delete_phys_client', [client_number], commit=True, fetchall=False)
 
             return redirect(url_for('all_clients'))
 
@@ -309,13 +269,7 @@ def entity_client():
 
             client_number = request.args['cl_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('entity_client_inf', [client_number])
-
-            results_entity = cur.fetchone()
-
-            cur.close()
+            results_entity = call_stored_procedure('entity_client_inf', [client_number], commit=False, fetchall=False)
 
             return render_template('entity_client.html', title=f'{results_entity[1]} {results_entity[2]} {results_entity[3]}', results_entity=results_entity, login=session['username'])
 
@@ -323,13 +277,7 @@ def entity_client():
 
             client_number = request.args['cl_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('delete_entity_client', [client_number])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('delete_entity_client', [client_number], commit=True, fetchall=False)
 
             return redirect(url_for('all_clients'))
 
@@ -359,13 +307,7 @@ def add_reo():
 
             reo_employee_number = reo_employee_number.split()
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_employee')
-
-            employees = cur.fetchall()
-
-            cur.close()
+            employees = call_stored_procedure('show_employee', commit=False, fetchall=True)
 
             emp_number = 0
 
@@ -373,35 +315,23 @@ def add_reo():
                 if (emp[1] == reo_employee_number[0] and emp[2] == reo_employee_number[1] and emp[3] == reo_employee_number[2]):
                     emp_number = emp[0]
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('add_real_estate_object', [reo_room_type,
-                                                    reo_type_of_operation,
-                                                    reo_district,
-                                                    reo_address,
-                                                    emp_number,
-                                                    reo_floor,
-                                                    reo_number_of_rooms,
-                                                    reo_availability_of_the_Internet,
-                                                    reo_availability_of_furniture,
-                                                    reo_price
-                                                    ]
-            )
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('add_real_estate_object', [
+                                                                reo_room_type,
+                                                                reo_type_of_operation,
+                                                                reo_district,
+                                                                reo_address,
+                                                                emp_number,
+                                                                reo_floor,
+                                                                reo_number_of_rooms,
+                                                                reo_availability_of_the_Internet,
+                                                                reo_availability_of_furniture,
+                                                                reo_price
+                                                    ], commit=True, fetchall=False)
 
             return redirect(url_for('all_reos'))
 
         elif request.method == 'GET':
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_employee')
-
-            employees = cur.fetchall()
-
-            cur.close()
+            employees = call_stored_procedure('show_employee', commit=False, fetchall=True)
 
             return render_template('add_reo.html', title='Добавить объект недвижимости', login=session['username'], employees=employees)
 
@@ -432,17 +362,7 @@ def search_result_reo():
 
             reo_address = request.args['reo_address']
 
-            print(reo_address)
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('search_real_estate_objects', [reo_address])
-
-            search_result = cur.fetchall()
-
-            print(search_result)
-
-            cur.close()
+            search_result = call_stored_procedure('search_real_estate_objects', [reo_address], fetchall=True)
 
             return render_template('search_result_reo.html', title='Результаты поиска', search_result=search_result, login=session['username'])
 
@@ -454,14 +374,7 @@ def all_reos():
     if 'loggedin' in session:
 
         if request.method == 'GET':
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_real_estate_objects')
-
-            real_estate_objects = cur.fetchall()
-
-            cur.close()
+            real_estate_objects = call_stored_procedure('show_real_estate_objects', commit=False, fetchall=True)
 
             return render_template('all_reos.html', title='Список объектов недвижимости', login=session['username'], real_estate_objects=real_estate_objects)
 
@@ -475,13 +388,7 @@ def reo_inf():
         if request.method == 'POST':
             reo_number = request.args['reo_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('delete_real_estate_objects', [reo_number])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('delete_real_estate_objects', [reo_number], commit=True, fetchall=False)
 
             return redirect(url_for('all_reos'))
 
@@ -490,29 +397,11 @@ def reo_inf():
             reo_number = request.args['reo_number']
             emp_number = request.args['emp_number']
 
-            cur = mysql.connection.cursor()
+            inf_reo = call_stored_procedure('real_estate_objects_inf', [reo_number], commit=False, fetchall=False)
 
-            cur.callproc('real_estate_objects_inf', [reo_number])
+            inf_emp = call_stored_procedure('employee_inf', [emp_number], commit=False, fetchall=False)
 
-            inf_reo = cur.fetchone()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('employee_inf', [emp_number])
-
-            inf_emp = cur.fetchone()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_viewing_history_reo', [reo_number])
-
-            viewing_history = cur.fetchall()
-
-            cur.close()
+            viewing_history = call_stored_procedure('show_viewing_history_reo', [reo_number], commit=False, fetchall=True)
 
             return render_template('reo.html', title='Информация об объекте недвижимости', login=session['username'],  inf_reo=inf_reo, inf_emp=inf_emp, viewing_history=viewing_history)
 
@@ -531,17 +420,12 @@ def add_employee():
             "emp_surname" in request.form and
             "emp_patronymic" in request.form
         ):
-            cur = mysql.connection.cursor()
 
             emp_name = request.form["emp_name"]
             emp_surname = request.form["emp_surname"]
             emp_patronymic = request.form["emp_patronymic"]
 
-            cur.callproc('add_employee', [emp_surname, emp_name, emp_patronymic])
-
-            mysql.connection.commit()
-
-            cur.close()
+            call_stored_procedure('add_employee', [emp_surname, emp_name, emp_patronymic], commit=True, fetchall=False)
 
             return redirect(url_for('add_employee'))
 
@@ -557,13 +441,7 @@ def all_employees():
 
         if request.method == 'GET':
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_employee')
-
-            employees = cur.fetchall()
-
-            cur.close()
+            employees = call_stored_procedure('show_employee', commit=False, fetchall=True)
 
             return render_template('all_employees.html', title='Список сотрудников', login=session['username'], employees=employees)
 
@@ -578,11 +456,7 @@ def employee_inf():
 
             employee_number = request.args['employee_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('employee_inf', [employee_number])
-
-            employee_inf = cur.fetchone()
+            employee_inf = call_stored_procedure('employee_inf', [employee_number], commit=False, fetchall=False)
 
             return render_template('employee.html', title=f'{employee_inf[1]} {employee_inf[2]} {employee_inf[3]}', login=session['username'], employee_inf=employee_inf)
 
@@ -590,13 +464,7 @@ def employee_inf():
 
             employee_number = request.args['employee_number']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('delete_employee', [employee_number])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('delete_employee', [employee_number], commit=True, fetchall=False)
 
             return redirect(url_for('all_employees'))
 
@@ -621,21 +489,9 @@ def add_viewing_history():
             client_inf = client_inf.split()
             client_phone_number = client_inf[3]
 
-            cur = mysql.connection.cursor()
+            client_number = call_stored_procedure('search_client_with_phone', [client_phone_number], commit=False, fetchall=False)
 
-            cur.callproc('search_client_with_phone', [client_phone_number])
-
-            client_number = cur.fetchone()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('add_viewing_history', [client_number, reo_number, date_view])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('add_viewing_history', [client_number, reo_number, date_view], commit=True, fetchall=False)
 
             return redirect(url_for('reo_inf', reo_number=reo_number, emp_number=emp_number))
 
@@ -644,13 +500,7 @@ def add_viewing_history():
             reo_number = request.args['reo_number']
             reo_address = request.args['reo_address']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_all_clients')
-
-            clients = cur.fetchall()
-
-            cur.close()
+            clients = call_stored_procedure('show_all_clients', commit=False, fetchall=True)
 
             return render_template('add_viewing_history.html', title='Добавить истории просмтора',login=session['username'], reo_number=reo_number, reo_address=reo_address, clients=clients)
 
@@ -672,49 +522,19 @@ def add_application():
 
             cl_phone = cl_data[3]
 
-            cur = mysql.connection.cursor()
+            client_number = call_stored_procedure('search_client_with_phone', [cl_phone], commit=False, fetchall=False)
 
-            cur.callproc('search_client_with_phone', [cl_phone])
+            reo_number = call_stored_procedure('search_reo_with_address', [reo_data], commit=False, fetchall=False)
 
-            client_number = cur.fetchone()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('search_reo_with_address', [reo_data])
-
-            reo_number = cur.fetchone()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('add_aplication', [reo_number, client_number, date_of_conclusion, session['id']])
-
-            cur.close()
-
-            mysql.connection.commit()
+            call_stored_procedure('add_aplication', [reo_number, client_number, date_of_conclusion, session['id']], commit=True, fetchall=False)
 
             return redirect(url_for('all_applications'))
 
         elif request.method == 'GET':
 
-            cur = mysql.connection.cursor()
+            real_estate_objects = call_stored_procedure('show_real_estate_objects', commit=False, fetchall=True)
 
-            cur.callproc('show_real_estate_objects')
-
-            real_estate_objects = cur.fetchall()
-
-            cur.close()
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_client_for_application')
-
-            clients = cur.fetchall()
-
-            cur.close()
+            clients = call_stored_procedure('show_client_for_application', commit=False, fetchall=True)
 
             return render_template('add_application.html', login=session['username'], title='Добавить заявку', real_estate_objects=real_estate_objects, clients=clients)
 
@@ -747,13 +567,7 @@ def result_date_interval():
             start_of_interval = request.args['start_of_interval']
             end_of_interval = request.args['end_of_interval']
 
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_all_applications_in_between', [start_of_interval, end_of_interval])
-
-            search_result = cur.fetchall()
-
-            cur.close()
+            search_result = call_stored_procedure('show_all_applications_in_between', [start_of_interval, end_of_interval], commit=False, fetchall=True)
 
             return render_template('result_date_interval.html', search_result=search_result, start_of_interval=start_of_interval, end_of_interval=end_of_interval)
 
@@ -764,14 +578,7 @@ def result_date_interval():
 def all_applications():
     if 'loggedin' in session:
         if request.method == 'GET':
-
-            cur = mysql.connection.cursor()
-
-            cur.callproc('show_all_applications')
-
-            all_aplications = cur.fetchall()
-
-            cur.close()
+            all_aplications = call_stored_procedure('show_all_applications', commit=False, fetchall=True)
 
             return render_template('all_applications.html', login=session['username'], title='Список заявок', all_aplications=all_aplications)
 
